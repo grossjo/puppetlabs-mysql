@@ -33,7 +33,12 @@ class mysql::server (
 
   $config_class = { 'mysql::config' => $config_hash }
 
-  create_resources( 'class', $config_class )
+  # A hack to get around the issue of the puppet version we use
+  # and teh ruby verison we use on our current puppet master
+  #create_resources( 'class', $config_class )
+  class { 'mysql::config' :
+    root_password => $config_hash['root_password'],
+  }
 
   package { 'mysql-server':
     ensure => $package_ensure,
